@@ -1,0 +1,4 @@
+beautifulsoup4==4.11.1
+Gooey==1.0.8.1
+requests==2.27.1
+setuptools==62.1.0

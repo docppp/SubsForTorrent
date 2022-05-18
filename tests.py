@@ -1,0 +1,76 @@
+import logging
+import unittest
+
+import utilities
+from pageinfo import check_movie_page_content
+from scraper import Scraper
+from subtitle import Subtitle
+
+#
+# Test pages can change in the future as new subtitles could be uploaded,
+# but testing not on the live page does not make much sense.
+#
+# If any test fail, manual check if something changed should be done first.
+#
+# Assumptions:
+# Query "Men in hope 2010" is invalid.
+# Query "Men in hope" gives 2 movies - "Men in Hope" and "Men in Black".
+# Query "Men in hope 2011" gives only one movie with 3 different subtitles.
+# Query "Moana 2016" redirects directly to subtitle site (ony one subtitle).
+#
+
+
+class Pages:
+    logging.basicConfig(level=logging.CRITICAL)
+    address = "https://www.opensubtitles.org/pl/search2/sublanguageid-pol/moviename-"
+    q_zero_movies = "Men in hope 2010"
+    q_multi_movies = "Men in hope"
+    q_multi_subs = "Men in hope 2011"
+    q_one_sub = "Moana 2016"
+    zero_movies = utilities.get_page(address + q_zero_movies)
+    multi_movies = utilities.get_page(address + q_multi_movies)
+    multi_subs = utilities.get_page(address + q_multi_subs)
+    one_sub = utilities.get_page(address + q_one_sub)
+
+
+class TestScraper(unittest.TestCase):
+    def test_pageinfo_movie(self):
+        self.assertEqual(check_movie_page_content(Pages.multi_movies.text), "MULTI_MOVIES")
+        self.assertEqual(check_movie_page_content(Pages.multi_subs.text), "MULTI_SUBTITLES")
+        self.assertEqual(check_movie_page_content(Pages.one_sub.text), "ONE_SUBTITLE")
+        with self.assertRaises(utilities.MovieError):
+            check_movie_page_content(Pages.zero_movies.text)
+
+    def test_subtitles_on_the_page(self):
+        subtitles = Scraper.find_multi_subs(Pages.multi_subs.content)
+        self.assertEqual(len(subtitles), 3)
+        self.assertEqual(subtitles[0].name, "psig-muzi.v.nadeji.2011.dvdrip.xvid")
+        self.assertEqual(subtitles[1].name, "Muzi.v.nadeji.2011.DVDRip.XviD.AC3.CZ.LEADERs")
+        self.assertEqual(subtitles[2].name, "Muzi.v.nadeji.2011.x264.DTS-WAF")
+
+    def test_single_subtitle_ont_the_page(self):
+        subtitles = Scraper.find_single_sub(Pages.one_sub.text)
+        self.assertEqual(len(subtitles), 1)
+        self.assertEqual(subtitles[0].name, "Moana.2016.MULTi.1080p.BluRay.DTS.x264-TPX.srt")
+
+    # TODO:
+    # test choose_one_query, also splitting this func for smaller pieces would be nice
+
+
+class TestSubtitle(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.sub = Subtitle("psig-muzi.v.nadeji.2011.dvdrip.xvid", "4466472")
+
+    def test_fps(self):
+        self.assertEqual(self.sub.get_subtitle_fps(), 25)
+
+    def test_link(self):
+        self.assertEqual(self.sub.get_subtitle_link(), "http://dl.opensubtitles.org/pl/download/file/1953027826")
+
+
+# TODO:
+# test Matcher
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,0 +1,41 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyChainedComparisonsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoreConstantInTheMiddle" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+          <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="database.Database._Database__DB_NAME" />
+          <option value="fight.const.max_regen" />
+          <option value="fight.const.shield_reduction" />
+          <option value="fight.const.max_rounds" />
+          <option value="fight.const.max_heals" />
+          <option value="fight.const.pierce" />
+          <option value="fight.const.max_anger" />
+          <option value="fight.const.max_poison" />
+          <option value="fight.const.max_favor" />
+          <option value="fight.const.max_rune_regen" />
+          <option value="fight.const.max_node_regen" />
+          <option value="main_window.SceneMain" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
