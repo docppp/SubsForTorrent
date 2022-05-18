@@ -1,0 +1,6 @@
+[submodule "videoprops"]
+	path = videoprops
+	url = https://github.com/mvasilkov/python-get-video-properties.git
+[submodule "PTN"]
+	path = PTN
+	url = https://github.com/divijbindlish/parse-torrent-name.git
