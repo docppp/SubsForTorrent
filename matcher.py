@@ -25,11 +25,13 @@ class Matcher:
         return subtitles[scores.index(max(scores))]
 
     def get_subtitle_matching_score(self, sub: Subtitle):
-        if sub.fps != self.file_info['fps']:
-            return -1
-
         if sub.fps == 0:
+            logging.info(f"SCORE: {0} for {sub.name}")
             return 0
+
+        if sub.fps != self.file_info['fps']:
+            logging.info(f"SCORE: {-1} for {sub.name}")
+            return -1
 
         sub_info = PTN.parse(sub.name)
 
@@ -43,7 +45,7 @@ class Matcher:
         score += check_similarity('group') * 3
         score += check_similarity('quality') * 2
         score += check_similarity('codec') * 1
-
+        logging.info(f"SCORE: {score} for {sub.name}")
         return score
 
 

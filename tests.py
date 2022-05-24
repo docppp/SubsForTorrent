@@ -2,7 +2,7 @@ import logging
 import unittest
 
 import utilities
-from pageinfo import check_movie_page_content
+from pageinfo import check_page_content
 from scraper import Scraper
 from subtitle import Subtitle
 
@@ -35,11 +35,11 @@ class Pages:
 
 class TestScraper(unittest.TestCase):
     def test_pageinfo_movie(self):
-        self.assertEqual(check_movie_page_content(Pages.multi_movies.text), "MULTI_MOVIES")
-        self.assertEqual(check_movie_page_content(Pages.multi_subs.text), "MULTI_SUBTITLES")
-        self.assertEqual(check_movie_page_content(Pages.one_sub.text), "ONE_SUBTITLE")
+        self.assertEqual(check_page_content(Pages.multi_movies.text), "MULTI_MOVIES")
+        self.assertEqual(check_page_content(Pages.multi_subs.text), "MULTI_SUBTITLES")
+        self.assertEqual(check_page_content(Pages.one_sub.text), "ONE_SUBTITLE")
         with self.assertRaises(utilities.MovieError):
-            check_movie_page_content(Pages.zero_movies.text)
+            check_page_content(Pages.zero_movies.text)
 
     def test_subtitles_on_the_page(self):
         subtitles = Scraper.find_multi_subs(Pages.multi_subs.content)
@@ -66,7 +66,7 @@ class TestSubtitle(unittest.TestCase):
         self.assertEqual(self.sub.get_subtitle_fps(), 25)
 
     def test_link(self):
-        self.assertEqual(self.sub.get_subtitle_link(), "http://dl.opensubtitles.org/pl/download/file/1953027826")
+        self.assertEqual(self.sub.get_subtitle_link(), "https://dl.opensubtitles.org/pl/download/file/1953027826")
 
 
 # TODO:

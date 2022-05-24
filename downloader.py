@@ -17,10 +17,8 @@ class Downloader:
                  allow_unknown_fps: bool):
         file_path = Path(file_path)
         m = Matcher(file_path)
-        q = m.file_info['title'] + " " + str(m.file_info['year']) if 'year' in m.file_info else m.file_info['title']
-        # TODO:
-        # query for tv series [SomeTvSeriesTitleS01E02]
-        scraper = Scraper(q)
+        q = self._prepare_query(m.file_info)
+        scraper = Scraper(*q)
 
         self.chosen_sub = m.get_best_subtitles(scraper.subtitles, allow_unknown_fps)
         self.file_path = file_path
@@ -54,4 +52,14 @@ class Downloader:
         info = remote_file.info()['Content-Disposition']
         _, params = cgi.parse_header(info)
         return Path(params["filename"])
+
+    @staticmethod
+    def _prepare_query(file_info: dict) -> list:
+        q = [file_info['title'] + " " + str(file_info['year']) if 'year' in file_info else file_info['title']]
+
+        if 'season' in file_info and 'episode' in file_info:
+            q.append(file_info['season'])
+            q.append(file_info['episode'])
+
+        return q
 

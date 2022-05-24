@@ -20,9 +20,9 @@ class Subtitle:
         return 0
 
     def get_subtitle_link(self):
-        r = re.search('http://dl.opensubtitles.org/.*/download/file/[0-9]*', self.page.text)
+        r = re.search('://dl.opensubtitles.org/pl/download/file/[0-9]*', self.page.text)
         if r:
-            return r.group(0)
+            return "https" + r.group(0)
         logging.error(f"Could not find download link at {self.address}")
 
     def __str__(self):
