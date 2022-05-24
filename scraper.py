@@ -75,7 +75,7 @@ class Scraper:
             results = results.next_sibling
 
         # Get episode id
-        r = re.search('/search/sublanguageid-pl/imdbid-[0-9]*', str(results))
+        r = re.search('/search/sublanguageid-.*/imdbid-[0-9]*', str(results))
         episode_id = r.group(0).split('/')[-1].split('-')[-1]
         return episode_id
 
